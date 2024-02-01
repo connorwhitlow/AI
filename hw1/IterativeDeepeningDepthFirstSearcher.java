@@ -49,6 +49,7 @@ public class IterativeDeepeningDepthFirstSearcher extends Searcher {
 			DepthLimitedSearcher dl = new DepthLimitedSearcher(i);
 			if(dl.search(rootNode))
 			{
+				nodeCount += dl.getNodeCount();
 				goalNode = dl.getGoalNode();
 				return true;
 			}
