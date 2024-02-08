@@ -28,7 +28,7 @@ public class HPancakeSortNode extends HSearchNode{
 		for(int i = 0; i < numFlips; ++i)
 		{
 			Random rand = new Random(42);
-			flip(rand.nextInt(2, size));
+			flip(rand.nextInt(size-1)+2);
 		}
 	}
 	
