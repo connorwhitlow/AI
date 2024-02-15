@@ -29,7 +29,8 @@ public class DistantSampler {
 	 */
 	public static DistantSamplerState sample(double[][] data, int numSamples) {
 		DistantSamplerState state = new DistantSamplerState(data, numSamples);
-		State minState = new SimulatedAnnealer(state, 10000, .99).search(10000);
+		State minState = new SimulatedAnnealer(state, 10000, .999).search(10000);
+//	    State minState = new HillDescender(state, 0.00065).search(10000);
 	    return (DistantSamplerState)minState;
 	}
 	
