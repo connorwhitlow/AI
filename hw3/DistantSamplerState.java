@@ -23,7 +23,7 @@ public class DistantSamplerState implements State{
 			sampleIndices[i] = indices[randomIndex];
 			// Remove the selected index to ensure uniqueness
 			indices[randomIndex] = indices[indices.length - 1];
-			indices = Arrays.copyOf(indices, indices.length - 1);
+			indices = Arrays.copyOf(indices, indices.length - 2);
 		}
 
 	}
@@ -58,7 +58,7 @@ public class DistantSamplerState implements State{
 
 				for(int k = 0; k < data[0].length; ++k) {
 					double diff = data[i][k] - data[j][k];
-					totalEnergy += 1/(diff * diff);
+					totalEnergy += 1/(diff);
 				}
 
 
@@ -92,6 +92,6 @@ public class DistantSamplerState implements State{
 	}
 
 	public String toString() {
-		return sampleIndices.toString();
+		return data.toString();
 	}
 }
