@@ -9,10 +9,10 @@ public class RookJumpingMaze extends java.lang.Object implements State, java.lan
     // Field summary
     public static final int UNREACHED; // low-value integer constant indicating that a grid position cannot be reached by search.
     int[][] grid;
+    int[][] depth;
     int size;
     int energy;
     int oldCol, oldRow, oldJump;
-    ArrayList<String> visited;
 
     // Constructor
     /**
@@ -21,17 +21,15 @@ public class RookJumpingMaze extends java.lang.Object implements State, java.lan
      */
     public RookJumpingMaze(int size) {
     	energy = 0;
-    	visited = new ArrayList<>();
     	this.size = size;
         grid = new int[size][size];
+        depth = new int[size][size];
         Random rand = new Random();
-        
         for (int r = 0; r < size; ++r) {
             for (int c = 0; c < size; ++c) {
                 int maxJump = Math.max(size - r - 1, r); // Maximum jump based on row
                 int maxColJump = Math.max(size - c - 1, c); // Maximum jump based on column
                 int legalJump = Math.max(maxJump, maxColJump); // The larger of the two determines the max legal jump
-
                 if (legalJump > 0) { // Ensure there's room to jump
                     grid[r][c] = rand.nextInt(legalJump) + 1; // Assign a random legal jump (1 to legalJump)
                 } else {
@@ -70,27 +68,28 @@ public class RookJumpingMaze extends java.lang.Object implements State, java.lan
     	Pair root = new Pair(0,0);
     	Queue<Pair> q = new LinkedList<>();
     	q.add(root);
+    	for(int i = 0; i < size; ++ i)
+    		for(int c = 0; c < size; ++c) {
+    			depth[i][c] = UNREACHED;
+    		}
+    	depth[0][0] = 0;
     	while(true) {
-    		
     		if(q.isEmpty()) {
+    			energy = UNREACHED;
     			return UNREACHED;
     		}
     		
     		Pair cur = q.poll();
     		
     		if(isGoal(cur)) {
+    			energy = -depth[size-1][size-1];
     			return energy;
     		}
     		else{
-    			int added = 0;
     			for(Pair r: expand(cur)) {
-    				if(!visited.contains(r.toString())) {
-    					++added;
+    				if(depth[r.r][r.c] > depth[cur.r][cur.c]) {
     					q.add(r);
-    					visited.add(cur.toString());
-    				}
-    				if(added == 1) {
-    					--energy;
+    					depth[r.r][r.c] = depth[cur.r][cur.c] + 1;
     				}
     			}
     		}
@@ -173,7 +172,7 @@ public class RookJumpingMaze extends java.lang.Object implements State, java.lan
 
     // Initialize static fields
     static {
-        UNREACHED = 80; // example initialization, adjust as needed
+        UNREACHED = 800; // example initialization, adjust as needed
     }
     
     public boolean isGoal(Pair p) {
@@ -192,9 +191,7 @@ public class RookJumpingMaze extends java.lang.Object implements State, java.lan
             int nextCol = p.c + (dCol[i] * getJump(p.r, p.c));
             // Check if the move is within the grid bounds
             if (nextRow >= 0 && nextRow < size && nextCol >= 0 && nextCol < size) {
-                Pair neighbor = p.clone(); // Clone the current state
-                neighbor.r = nextRow; // Update the row
-                neighbor.c = nextCol; // Update the column
+                Pair neighbor = new Pair(nextRow, nextCol); // Clone the current state
                 neighbors.add(neighbor); // Add the new state to the list
             }
         }

@@ -14,7 +14,7 @@ public class RJMGenerator {
 	public static RookJumpingMaze generate(int size) {
 	    RookJumpingMaze root = new RookJumpingMaze(size);
 	    //State minState = new HillDescender(root, 0.005).search(ITERATIONS);
-	  	State minState = new SimulatedAnnealer(root, 10000, .99998).search(ITERATIONS);
+	    State minState = new SimulatedAnnealer(root, 1000, .995).search(ITERATIONS);
 	    return (RookJumpingMaze) minState;
 	}
 
@@ -36,7 +36,7 @@ public class RJMGenerator {
 		RookJumpingMaze maze = generate(5);
 		System.out.println(maze);
 		System.out.println("Energy: " + maze.energy());
-//		computeMedian(5, 100); // -18
+		computeMedian(5, 100); // -18
 	}
 
 }

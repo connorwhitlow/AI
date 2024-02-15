@@ -28,8 +28,8 @@ Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  */
 
 public interface State extends Cloneable { 
-	void step();
-	void undo();
-	double energy();
-	Object clone();
+    void step();
+    void undo();
+    double energy();
+    Object clone();
 }
