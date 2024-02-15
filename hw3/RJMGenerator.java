@@ -13,8 +13,8 @@ public class RJMGenerator {
 	 */
 	public static RookJumpingMaze generate(int size) {
 	    RookJumpingMaze root = new RookJumpingMaze(size);
-	    //State minState = new HillDescender(root, 0.005).search(ITERATIONS);
-	    State minState = new SimulatedAnnealer(root, 1000, .995).search(ITERATIONS);
+	    //State minState = new HillDescender(root, 0.00065).search(ITERATIONS);
+	    State minState = new SimulatedAnnealer(root, 9000, .99565).search(ITERATIONS);
 	    return (RookJumpingMaze) minState;
 	}
 

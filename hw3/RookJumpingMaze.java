@@ -3,7 +3,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 
-//used chatgpt for a "skeleton" of the class
+//used chatgpt for a "skeleton" of the class, gave it specifications from the API
 public class RookJumpingMaze extends java.lang.Object implements State, java.lang.Cloneable {
 
     // Field summary
@@ -18,6 +18,8 @@ public class RookJumpingMaze extends java.lang.Object implements State, java.lan
     /**
      * Constructs a RookJumpingMaze that is a size-by-size grid with random, legal jump numbers for each position.
      * @param size - number of rows/columns
+     * chatgpt: find the maximum legal jump from row and column on the grid usng the size.
+     * then calcuate a random number between 1 inclusive and that maximum 
      */
     public RookJumpingMaze(int size) {
     	energy = 0;
@@ -49,7 +51,7 @@ public class RookJumpingMaze extends java.lang.Object implements State, java.lan
      * @return the jump number for the given row and column
      */
     public int getJump(int row, int col) {
-        return grid[row][col]; // placeholder return
+        return grid[row][col]; 
     }
 
     /**
@@ -98,6 +100,7 @@ public class RookJumpingMaze extends java.lang.Object implements State, java.lan
 
     /**
      * Picks a non-goal grid position at random and changes it to a different legal jump number.
+     * chatgpt: find the maximum legal jump on this board and get a random number from 1 inclusive to that number, exclusive 
      */
     public void step() {
     	Random rand = new Random();
@@ -179,7 +182,7 @@ public class RookJumpingMaze extends java.lang.Object implements State, java.lan
     	return p.r == (size - 1) && p.c == (size - 1);
     }
     
-    //cgpt: given the implementation of step, return an arraylist of all legal moves
+    //cgpt: return arraylist of all legal moves by implementing the prior logic 
     public ArrayList<Pair> expand(Pair p) {
         ArrayList<Pair> neighbors = new ArrayList<>();
         int[] dRow = {0, 0, -1, 1}; // Directions: Up, Down
