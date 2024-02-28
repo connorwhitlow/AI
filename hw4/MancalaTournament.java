@@ -16,7 +16,7 @@ import java.io.PrintWriter;
 public class MancalaTournament {
 	static int totalMoves = 0;
 	private static final int NUM_GAMES = 9; // TODO - set the number of games per match
-	private static final long MILLISECONDS_PER_GAME = 3000; // TODO - set the maximum milliseconds per game
+	private static final long MILLISECONDS_PER_GAME = 30000; // TODO - set the maximum milliseconds per game
 	// (300000 ms/game = 300 seconds/game = 5 minutes/game)
 
 	/**
@@ -28,7 +28,7 @@ public class MancalaTournament {
 		long startTime = System.currentTimeMillis();
 
 		// TODO - Modify identifiers to be the prefixes before "MancalaPlayer" in the competing class file names.
-		String[] playerIdentifiers = {"Whitco03", "Simple"};
+		String[] playerIdentifiers = {"Whitco03", "amatya01"};
 
 		String[] competitors = new String[playerIdentifiers.length];
 		for (int i = 0; i < playerIdentifiers.length; i++)
@@ -180,7 +180,7 @@ public class MancalaTournament {
 						else
 							winner = "DRAW";
 					System.out.println(winner);
-					System.out.println(totalMoves);
+					System.out.println(totalMoves/2);
 					totalMoves = 0;
 				}
 				p.println("Time Taken (ms): ");

@@ -15,17 +15,17 @@ public class SimpleMancalaPlayer implements MancalaPlayer {
 		// to distribute search time over course of game.  
 		// It under-utilizes time, so you should design better time management.
 		final double DEPTH_FACTOR = 1.3;
-		int depthLimit = (int) (DEPTH_FACTOR * Math.log((double) -timeRemaining 
+		int depthLimit = 0;
+		depthLimit = (int) (DEPTH_FACTOR * Math.log((double) timeRemaining 
 							/ piecesRemaining(node)));
 		if (depthLimit < 1) depthLimit = 1;
 
-		// Create a minimax searcher.
-		MinimaxSearcher searcher = new MinimaxSearcher(depthLimit);
+		// Create an ab searcher.
+		AlphaBetaSearch searcher = new AlphaBetaSearch(depthLimit);
 
 		// Create a new copy of the input node that uses the
 		// score difference heuristic evaluation function. 
-		ScoreDiffMancalaNode searchNode = new ScoreDiffMancalaNode(node);
-
+		Whitco03MancalaNode searchNode = new Whitco03MancalaNode(node);
 		searcher.eval(searchNode);
 		return searcher.getBestMove();
 	}

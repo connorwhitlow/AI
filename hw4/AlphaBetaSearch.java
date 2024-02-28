@@ -1,9 +1,11 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AlphaBetaSearch implements GameTreeSearcher{
 	int depthLimit;
 	int bestMove;
 	int nodeCount;
+	HashMap<Integer, Integer> states;
 	
 	public AlphaBetaSearch(int depthLimit) {
 		this.depthLimit = depthLimit;
@@ -14,9 +16,9 @@ public class AlphaBetaSearch implements GameTreeSearcher{
 		boolean maximizing = (node.getPlayer() == GameNode.MAX);
 		double bestUtility = 
 				maximizing ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
-		nodeCount++;
 		double alpha = a;
 		double beta = b;
+		//states = new HashMap<>();
 		
 		ArrayList<GameNode> children = node.expand();
 		
@@ -26,6 +28,7 @@ public class AlphaBetaSearch implements GameTreeSearcher{
 				
 		for(GameNode child: children) {
 			double childUtility = absearch(child, depthLeft - 1, alpha, beta);
+			++nodeCount;
 			if (maximizing) {
 				if(childUtility > bestUtility) {
 				bestUtility = childUtility;
@@ -40,13 +43,22 @@ public class AlphaBetaSearch implements GameTreeSearcher{
 				}
 				beta = Math.min(bestUtility, beta);
 			}
-		
+			
+//			///chatgpt: how to safely use hashmap to avoid nullpointerexception
+//			//if map does not have entry?
+//			int count = states.getOrDefault(localBestMove, 0);
+//			states.put(localBestMove, ++count);
+//
+//			if(count >= 8) {
+//				return localBestMove;
+//			}
+			
 		if(alpha >= beta) {
 			break;
 		}
 		
 		}
-		
+
 		bestMove = localBestMove;
 		return bestUtility;
 		

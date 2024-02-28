@@ -32,8 +32,15 @@ public class Whitco03MancalaNode extends MancalaNode{
 			}
 		}
 		
-		utility += (possMoves - minPoss)*2;
+		utility += (possMoves - minPoss);
 		
 		return utility;
+	}
+	
+	/**
+	 * Return the difference between current MAX and MIN score.
+	 */
+	public double simpleUtility() {
+		return state[MAX_SCORE_PIT] - state[MIN_SCORE_PIT];
 	}
 }

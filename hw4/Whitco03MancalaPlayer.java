@@ -9,9 +9,16 @@ public class Whitco03MancalaPlayer implements MancalaPlayer{
 		// TODO - WARNING: This is a simple time management effort 
 				// to distribute search time over course of game.  
 				// It under-utilizes time, so you should design better time management.
-				final double DEPTH_FACTOR = 2.7;
-				int depthLimit = (int) (DEPTH_FACTOR * Math.log((double) timeRemaining 
+				final double DEPTH_FACTOR = 1.3;
+				int depthLimit = 0;
+				if(totalMoves < 9) {
+				depthLimit = (int) (DEPTH_FACTOR * Math.log((double) timeRemaining 
 									/ piecesRemaining(node)));
+				++totalMoves;
+				}
+				else {
+					depthLimit = 10;
+				}
 				if (depthLimit < 1) depthLimit = 1;
 
 				// Create an ab searcher.
@@ -19,7 +26,7 @@ public class Whitco03MancalaPlayer implements MancalaPlayer{
 
 				// Create a new copy of the input node that uses the
 				// score difference heuristic evaluation function. 
-				if(totalMoves < 8) {
+				if(totalMoves < 9) {
 					searchNode = new Whitco03MancalaNode(node);
 					searcher.eval(searchNode);
 				}
@@ -28,8 +35,6 @@ public class Whitco03MancalaPlayer implements MancalaPlayer{
 					searcher.eval(searchNode1);
 				}
 
-				
-				++totalMoves;
 				return searcher.getBestMove();
 	}
 	

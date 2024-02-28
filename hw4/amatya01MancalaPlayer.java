@@ -20,11 +20,11 @@ public class amatya01MancalaPlayer implements MancalaPlayer {
 		if (depthLimit < 1) depthLimit = 1;
 
 		// Create a minimax searcher.
-		MinimaxSearcher searcher = new MinimaxSearcher(depthLimit);
+		AlphaBetaSearch searcher = new AlphaBetaSearch(depthLimit);
 
 		// Create a new copy of the input node that uses the
 		// score difference heuristic evaluation function. 
-		amatya011MancalaNode searchNode = new amatya011MancalaNode(node);
+		amatya01MancalaNode searchNode = new amatya01MancalaNode(node);
 
 		searcher.eval(searchNode);
 		return searcher.getBestMove();
