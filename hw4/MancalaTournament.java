@@ -28,7 +28,7 @@ public class MancalaTournament {
 		long startTime = System.currentTimeMillis();
 
 		// TODO - Modify identifiers to be the prefixes before "MancalaPlayer" in the competing class file names.
-		String[] playerIdentifiers = {"Whitco03", "amatya01"};
+		String[] playerIdentifiers = {"Whitco03", "Amatya01"};
 
 		String[] competitors = new String[playerIdentifiers.length];
 		for (int i = 0; i < playerIdentifiers.length; i++)
