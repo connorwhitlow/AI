@@ -1,7 +1,7 @@
 Connor Whitlow
 
-1. The state space is P_i, j, k where i is the player’s score, j is the opponent’s score and k is turn total.
-2. P_roll = 1/6(1 - P(j, i, 0)) + 1/6(P(I, j, k + 2))  + 1/6(P(I, j, k + 3))  + 1/6(P(I, j, k + 4))  + 1/6(P(I, j, k + 5))  + 1/6(P(I, j, k + 6))
+1. The state space is P_{i, j, k} where i is the player’s score, j is the opponent’s score and k is turn total.
+2. P_roll = 1/36(1-P(j, 0, 0)) + 5/18(1 - P(j, i, 0)) + 1/36(P(i, j, k + 4))  + 1/18(P(i, j, k + 5))  + 1/12(P(i, j, k + 6)) + 1/9(P(i, j, k + 7))  + 5/36(P(i, j, k + 8)) + 1/9(P(i, j, k + 9)) + 1/12(P(i, j, k + 10)) + 1/18(P(i, j, k + 11)) + 1/36(P(i, j, k + 12))
 P_hold = 1 - P(j, i + k, 0)
 3. .58082
 4. A player should generally try to roll ~20 if the scores are close to one another in the early-mid game.
