@@ -89,43 +89,10 @@ public class PigSolver {
             }
     }
 	
-	public static void main(String[] args){
-//		new PigSolver(100, 1e-9).outputRollValues();
-//		PigSolver pig = new PigSolver(100, 1e-9);
-//		pig.summarize();
-		
-		PigSolver pig = new PigSolver(100, 1e-9);
-		boolean previousAction = false; // Assume holding initially
-		int goal = 100;
-        for (int i = 0; i < goal; i++) {
-            for (int j = 0; j < goal; j++) {
-                for (int k = 0; i + k < goal; k++) {
-                    boolean currentAction = pig.shouldRoll(i, j, k);
-                    if (currentAction != previousAction) {
-                        if (currentAction) {
-                            System.out.println("Roll when at " + i + " with " + (j) + " opponents scored and cumulative score " + k);
-                        } else {
-                            System.out.println("Hold when at " + i + " with " + (j) + " opponents scored and cumulative score " + k);
-                        }
-                        previousAction = currentAction;
-                    }
-                }
-            }
-        }
-//		for(int i = 0; i < pig.goal; i++) {
-//			for(int j = 0; j < pig.goal; j++){
-//				int k = 0;
-//				System.out.print(i + "\t" + j + "\t" + (pig.shouldRoll(i, j, k) ? "roll " : "hold "));
-//				for (k = 2; i + k < pig.goal; k++) { // for all valid k
-//					boolean compare = pig.shouldRoll(i, j, k-1);
-//					if(k==2) 
-//						compare = pig.shouldRoll(i, j, 0);
-//					if (pig.shouldRoll(i, j, k) != compare)
-//						System.out.print(k + " " + (pig.shouldRoll(i, j, k) ? "roll " : "hold "));
-//				}
-//				System.out.println();
-//			}
-//		}
-	}
+//	public static void main(String[] args){
+//		
+//		new PigSolver(100, 1e-11).outputRollValues();
+//
+//	}
 
 }

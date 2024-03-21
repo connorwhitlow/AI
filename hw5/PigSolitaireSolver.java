@@ -32,9 +32,8 @@ public class PigSolitaireSolver {
 
 
 		// Compute the probability of winning with a roll
-		//		double pRoll = 1.0 - pWin(i, 0, 0);
+
 		double pRoll = pWin(i, j + 1, 0);
-		System.out.println(pRoll);
 		for (int roll = 2; roll <= 6; roll++) {
 			pRoll += pWin(i, j, k + roll);
 		}
@@ -59,30 +58,9 @@ public class PigSolitaireSolver {
 	public boolean shouldRoll(int i, int j, int k) {
 		return roll[i][j][k];
 	}
-	
-    public void calcProb() {
-//        for(int i = 0; i < goal; ++i) {
-//        	for(int j  = 0; j < turns; ++j) {
-//        		for(int k = 0; k <= goal; ++k) {
-////        			if(i + k == goal || !roll[i][j][k]) {
-        				System.out.println( " : " + p[0][0][0]);
-//        				break;
-//        			}
-//        		}
-//        	}
-//        }
-    }
+
     
-	public static void main(String[] args) {
-//		for(int i = 1; i < 10;++i) {
-			
-		
-			PigSolitaireSolver solver = new PigSolitaireSolver(100,10);
-		
-			solver.calcProb();
-//		}
-//		int goal = 100;
-//		int turns = 10;
+//	public static void main(String[] args) {
 //		
 //		PigSolitaireSolver solver = new PigSolitaireSolver(100,10);
 //		boolean previousAction = false; // Assume holding initially
@@ -101,6 +79,6 @@ public class PigSolitaireSolver {
 //                }
 //            }
 //        }
-	}
+//	}
 
 }
