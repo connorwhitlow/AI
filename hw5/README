@@ -1,10 +1,46 @@
-Connor Whitlow
+I affirm that I have upheld the highest principles of honesty and integrity in my academic work and have not witnessed a violation of the Honor Code.
+Connor Whitlow 6123289
+Yashaswe Amatya 6133353
 
-1. The state space is P_{i, j, k} where i is the player’s score, j is the opponent’s score and k is turn total.
-2. P_roll = 1/36(1-P(j, 0, 0)) + 5/18(1 - P(j, i, 0)) + 1/36(P(i, j, k + 4))  + 1/18(P(i, j, k + 5))  + 1/12(P(i, j, k + 6)) + 1/9(P(i, j, k + 7))  + 5/36(P(i, j, k + 8)) + 1/9(P(i, j, k + 9)) + 1/12(P(i, j, k + 10)) + 1/18(P(i, j, k + 11)) + 1/36(P(i, j, k + 12))
+
+2.4 Exercise
+
+Pig Solitaire:
+(a) The state space is P_{i, j, k} where i is the player’s score, j is number of turns completed and k is turn total.
+(b) P_roll = 1/6(P(i, j+1, 0)+P(i, j, k+1)+P(i, j, k+2)+P(i, j, k+3)+P(i, j, k+4)+P(i, j, k+5)+P(i, j, k+6))
+
+pHold = P(i+k, j+1, 0);
+
+(c) To prove that the state space is acyclic, we can argue that each state is uniquely determined by its i, j, and k values, and there are no loops or cycles in the transitions between states. Since the game progresses by incrementing i or j, each state can only transition to a new state with different i or j values, ensuring that states cannot repeat.
+(d) Probability of win when g = 100 and n = 10 is 0.465442.
+
+(e) Towards the initial game, when most turns are left, the player should roll until the turn total is ~30.
+When half the goal is reached or mid-game, if you have most turn totals left > 5 roll until ~20. If you have few turns left roll until turn total ~30
+When you are almost at goal and have most turns left then roll until turn total ~7 with lower turns left mostly just roll.
+(f) For g = 100, when n = 11 then optimal player’s initial win probability is ≥ .50
+
+
+3.5 Exercise
+
+Pig:
+(a) The state space is P_{i, j, k} where i is the player’s score, j is the opponent’s score and k is turn total.
+(b) P_roll = 1/6(1-P(j, i, 0) + P(i, j, k + 2) + P(i, j, k + 3)+ P(i, j, k + 4)+ P(i, j, k + 5)+ P(i, j, k + 6)
 P_hold = 1 - P(j, i + k, 0)
-3. .58082
-4. A player should generally try to roll ~20 if the scores are close to one another in the early-mid game.
+(c) 0.626938
+(d)  A player should generally try to roll ~20 if the scores are close to one another in the early-mid game.
+As the margin between player and opponent widens, so does the minimum hold number. 
+If the margin is very dramatic, the player should try to win the game in one turn. 
+As the game advances, the score difference that dictates whether the player should win the game in one roll decreases. 
+If player is close to winning (score > 65) and their opponent is not too far behind, they should try to win in one turn.
+If a player is close to winning and their opponent is far behind, they should hold earlier since they will probably have more chances to win. 
+
+
+TwoDicePig:
+(a) The state space is P_{i, j, k} where i is the player’s score, j is the opponent’s score and k is turn total.
+(b) P_roll = 1/36(1-P(j, 0, 0)) + 5/18(1 - P(j, i, 0)) + 1/36(P(i, j, k + 4))  + 1/18(P(i, j, k + 5))  + 1/12(P(i, j, k + 6)) + 1/9(P(i, j, k + 7))  + 5/36(P(i, j, k + 8)) + 1/9(P(i, j, k + 9)) + 1/12(P(i, j, k + 10)) + 1/18(P(i, j, k + 11)) + 1/36(P(i, j, k + 12))
+P_hold = 1 - P(j, i + k, 0)
+(c) .58082
+(d) A player should generally try to roll ~20 if the scores are close to one another in the early-mid game.
 As the margin between player and opponent widens, so does the minimum hold number. 
 If the margin is very dramatic, the player should try to win the game in one turn. 
 As the game advances, the score difference that dictates whether the player should win the game in one roll decreases. 
