@@ -7,9 +7,9 @@ Yashaswe Amatya 6133353
 
 Pig Solitaire:
 (a) The state space is P_{i, j, k} where i is the player’s score, j is number of turns completed and k is turn total.
-(b) P_roll = 1/6(P(i, j+1, 0)+P(i, j, k+1)+P(i, j, k+2)+P(i, j, k+3)+P(i, j, k+4)+P(i, j, k+5)+P(i, j, k+6))
+(b) P_roll = 1/6(P(i, j+1, 0)+ 1/6(P(i, j, k+1)) + 1/6(P(i, j, k+2)) + 1/6(P(i, j, k+3)) + 1/6(P(i, j, k+4)) + 1/6(P(i, j, k+5)) + 1/6(P(i, j, k+6))
 
-pHold = P(i+k, j+1, 0);
+pHold = P(j, i + k, 0);
 
 (c) To prove that the state space is acyclic, we can argue that each state is uniquely determined by its i, j, and k values, and there are no loops or cycles in the transitions between states. Since the game progresses by incrementing i or j, each state can only transition to a new state with different i or j values, ensuring that states cannot repeat.
 (d) Probability of win when g = 100 and n = 10 is 0.465442.
