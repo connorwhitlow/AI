@@ -1,16 +1,19 @@
 import java.util.TreeMap;
 
 import java.util.Map;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class BlackjackQLearning {
-	final int HIT = 1, STAY = 0, GOAL = 21, CARDS = 13;
+	final int HIT = 1, STAY = 0, GOAL = 21, CARDS = 13, MAX = 10;
 	Map<Integer, double[]> q = new TreeMap<>();
 	
 	class State{
 		int m, d;
 		boolean u;
 
+		//i copied and pasted our class code then told chat gpt to change the variable names to m, d and u 
 		public State(int m, int d, boolean u) {
 	        this.m = m; // Corrected from `this.u = i;`
 	        this.d = d; // Corrected from `this.t = t;`
@@ -20,10 +23,26 @@ public class BlackjackQLearning {
 	    public State() {
 	    	int o = (int) (Math.random() * CARDS) + 1; // Corrected from `i = ...;`
 	    	int t = (int) (Math.random() * CARDS) + 1; // Corrected from `i = ...;`
-	        m = o + t; // Corrected from `i = ...;`
+	    	o = (o > MAX) ? 10 : o;
+	    	t = (t > MAX) ? 10 : t;
+	    	if(o == 1 && t != 1 && t + 11 <= 21) {
+	    		m = t + 11;
+	    		u = true;
+	    	}
+	    	else if(t == 1 && o != 1) {
+	    		m = o + 11;
+	    		u = true;
+	    	}
+	    	else if (o == 1 && t == 1){
+	    		m = 12;
+	    		u = true;
+	    	}
+	    	else {
+	    		m = o + t; // Corrected from `i = ...;`
+	    	}
 	        d = (int) (Math.random() * CARDS) + 1; // Corrected from `t = ...;`
-	        if(o == 1 || t == 1)
-	        	u = Math.random() < 0.5; // Assuming you want a random boolean value for `u`
+	        d = (d > MAX) ? 10 : d;
+	        d = d == 1 ? 11 : d;
 	    }
 
 	    public State(State state) {
@@ -70,11 +89,16 @@ public class BlackjackQLearning {
 	private double env(State s, int a) {
 		if(a == HIT) {
 			int card = (int) (Math.random()*CARDS + 1);
+			card = (card > MAX) ? MAX : card;
 			if(card == 1) {
-				if(s.m + 11 > GOAL)
+				if(s.m + 11 > GOAL) {
 					++s.m;
-				else
+					s.u = false;
+				}
+				else {
 					s.m += 11;
+					s.u = true;
+				}
 			}
 			else {
 				if(s.m + card > GOAL && s.u) {
@@ -85,18 +109,30 @@ public class BlackjackQLearning {
 			}
 		}
 		int dealerTotal = s.d;
-		while(dealerTotal < 17) {
-			dealerTotal += (int) (Math.random()*CARDS + 1);
+		boolean dealerSoft = s.d == 11;
+		while(dealerTotal < 17 || (dealerTotal == 17 && dealerSoft == true)) {
+			int dealerHit = (int) (Math.random()*CARDS + 1);
+			dealerHit = dealerHit > 10 ? 10 : dealerHit;
+			if(dealerHit == 1 && dealerTotal + 11 <= 21) {
+				dealerSoft = true;
+				dealerTotal += 11;
+			}
+			else if(dealerHit == 1 && dealerTotal + 11 > 21) {
+				dealerSoft = false;
+				++dealerTotal;
+			}
+			else
+				dealerTotal += dealerHit;
 		}
 		
-		if(dealerTotal > GOAL)
-			return 1;
-		else if(dealerTotal == s.m)
-			return 0;
-		else if(dealerTotal > s.m)
-			return -1;
+//		if(dealerTotal > GOAL)
+//			return 1;
+//		else if(dealerTotal == s.m)
+//			return 0;
+//		else if(dealerTotal > s.m)
+//			return -1;
 		
-		return s.m == GOAL ? 1 : (s.m > GOAL ? -1 : (s.m > dealerTotal) ? 1 : -1);
+		return s.m == GOAL ? 1.5 : (s.m > GOAL ? -2 : (s.m > dealerTotal) ? 1 : -1);
 	}
 	
 	double[] getQS(State s) {
@@ -171,25 +207,65 @@ public class BlackjackQLearning {
 	
 	public boolean simulate() {
 		State s = new State();
+		double res = 0;
 		while(!s.isTerminal()) {
-			env(s, getEpsilonGreedyAction(getQS(s), 0));
+			res = env(s, getEpsilonGreedyAction(getQS(s), 0));
 		}
-		return s.m == GOAL;
+		return res > 0;
 	}
 	
 	public void summarize() {
 		//minimum hold values for row i, column t, turn total k
 				for(int u = 0; u < 2; ++u) {
+					if(u == 0)
+						System.out.println("HARD:");
+					else
+						System.out.println("SOFT:");
 					for(int m = 0; m < CARDS; ++m) {
 						for(int d = 0; d < CARDS; ++d) {
 							double[] qActions = getQS(new State(m, d, (u == 0) ? false : true));
 							System.out.printf("%b, ", qActions[HIT] > qActions[STAY]);
 						}
+						System.out.println();
 					}
-					System.out.println();
 				}
 	}
 	
+	//chatgpt: based off the class called BlackjackQLearning, write a method called summarize that will produce two tables in a csv file, one table has a label over it that says "hard" The x axis says "Dealer card" is starts at A, then 2, 3, 4, ... 10, J, Q, K. The Y axis says "Total" is starts at 17 and goes down to 8. If qActions hit > q actions stand at that cell, turn the cell green. otherwise, make the cell red. Then, do the same with a new table with a label over it named "Soft:" The x axis says "Dealer card" is starts at A, then 2, 3, 4, ... 10, J, Q, K. The Y axis says "Total" is starts at 20 and goes down to 13. (I then gave it the class)
+	public void summarizeToCSV() {
+	    String[] dealerCards = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+	    try (FileWriter writer = new FileWriter("blackjack_strategy.csv")) {
+	        for (int u = 0; u < 2; u++) {
+	            if (u == 0) {
+	                writer.append("HARD\n");
+	            } else {
+	                writer.append("\nSOFT\n");
+	            }
+	            writer.append("Dealer Card,");
+	            for (String card : dealerCards) {
+	                writer.append(card).append(",");
+	            }
+	            writer.append("\n");
+
+	            int startTotal = (u == 0) ? 17 : 20;
+	            int endTotal = (u == 0) ? 8 : 13;
+
+	            for (int m = startTotal; m >= endTotal; m--) {
+	                writer.append("Total ").append(Integer.toString(m)).append(",");
+	                for (int d = 1; d <= CARDS; d++) {
+	                    State tempState = new State(m, d, u == 1);
+	                    double[] qActions = getQS(tempState);
+	                    String actionColor = qActions[HIT] > qActions[STAY] ? "H" : "S";
+	                    writer.append(actionColor).append(",");
+	                }
+	                writer.append("\n");
+	            }
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+	    
 	public static void main(String[] args) {
 		double alpha = .1;
 		double epsilon = .1;
@@ -198,7 +274,8 @@ public class BlackjackQLearning {
 		int iter = 1000000;
 		BlackjackQLearning bj = new BlackjackQLearning(alpha, epsilon, gamma, decay, iter);
 		//System.out.println("hi");
-		bj.summarize();
+		//bj.summarize();
+		bj.summarizeToCSV();
 		System.out.println(bj.getSimWinRate(iter));
 	}
 }
