@@ -62,7 +62,7 @@ public class BlackjackQLearning {
 	    }
 
 	    boolean isTerminal() {
-	        return (!u && m > GOAL) || m == GOAL || d >=21; 
+	        return (!u && m > GOAL) || m == GOAL || d >= GOAL; 
 	    }
 		
 		@Override 
