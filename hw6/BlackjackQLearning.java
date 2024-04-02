@@ -62,7 +62,7 @@ public class BlackjackQLearning {
 	    }
 
 	    boolean isTerminal() {
-	        return (!u && m > GOAL) || m == GOAL; 
+	        return (!u && m > GOAL) || m == GOAL || d >=21; 
 	    }
 		
 		@Override 
@@ -111,7 +111,9 @@ public class BlackjackQLearning {
 		int dealerTotal = s.d;
 		boolean dealerSoft = s.d == 11;
 		while(dealerTotal < 17 || (dealerTotal == 17 && dealerSoft == true)) {
+			 
 			int dealerHit = (int) (Math.random()*CARDS + 1);
+			
 			dealerHit = dealerHit > 10 ? 10 : dealerHit;
 			if(dealerHit == 1 && dealerTotal + 11 <= 21) {
 				dealerSoft = true;
@@ -177,6 +179,7 @@ public class BlackjackQLearning {
 			double[] qActions = getQS(s);
 			//loop for each step of episode until s is terminal
 			while(!s.isTerminal()) {
+				
 				//Choose A from using policy derived from Q (e.g. epsilon-greedy)
 				int action = getEpsilonGreedyAction(qActions, epsilon);
 				//Take Action A, Observe R, S'
@@ -208,9 +211,19 @@ public class BlackjackQLearning {
 	public boolean simulate() {
 		State s = new State();
 		double res = 0;
+		int iterations = 0;
 		while(!s.isTerminal()) {
-			res = env(s, getEpsilonGreedyAction(getQS(s), 0));
+			int action = getEpsilonGreedyAction(getQS(s), 0);
+//			System.out.println("inside");	
+			res = env(s, action);
+//			System.out.println("inside"+res);	
+			if (iterations >= 1000) { // Safeguard to prevent infinite loop
+		        break;
+		    }
+		    // Existing logic to choose an action and update the state
+		    iterations++;
 		}
+	
 		return res > 0;
 	}
 	
@@ -275,7 +288,8 @@ public class BlackjackQLearning {
 		BlackjackQLearning bj = new BlackjackQLearning(alpha, epsilon, gamma, decay, iter);
 		//System.out.println("hi");
 		//bj.summarize();
-		bj.summarizeToCSV();
 		System.out.println(bj.getSimWinRate(iter));
+		bj.summarizeToCSV();
+		
 	}
 }
